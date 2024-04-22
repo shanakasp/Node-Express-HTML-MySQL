@@ -3,36 +3,61 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const dbservice = require("./dbservice.js");
+const DbService = require("./dbservice.js");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-//middlware
-
+// Middleware
 app.use((req, res, next) => {
   console.log("API Path", req.path);
   next();
 });
 
-//create
-app.post("/insert", (req, res) => {});
+const db = DbService.getInstance();
 
-//read
-app.get("/getAll", (req, res) => {
-  res.json({
-    success: true,
-  });
+// Create
+app.post("/insert", async (req, res) => {
+  try {
+    const result = await db.insertData(req.body);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-//update
-app.put("/update", (req, res) => {});
+// Read
+app.get("/getAll", async (req, res) => {
+  try {
+    const result = await db.getAllData();
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
-//delete
-app.delete("/delete", (req, res) => {});
+// Update
+app.put("/update", async (req, res) => {
+  try {
+    const result = await db.updateData(req.body);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
-app.listen(process.env.PORT, () =>
-  console.log(`App is running on port ${process.env.PORT}`)
-);
+// Delete
+app.delete("/delete/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await db.deleteData(id);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`App is running on port ${PORT}`));
