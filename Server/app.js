@@ -23,6 +23,7 @@ app.post("/insert", async (req, res) => {
   try {
     const result = await db.insertData(req.body);
     res.json(result);
+    console.log(req.body);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

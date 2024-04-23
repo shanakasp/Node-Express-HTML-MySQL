@@ -39,7 +39,7 @@ class DbService {
 
   insertData(data) {
     return new Promise((resolve, reject) => {
-      const query = "INSERT INTO your_table SET ?";
+      const query = "INSERT INTO name SET ?";
       connection.query(query, data, (err, result) => {
         if (err) {
           reject(err);
@@ -52,7 +52,7 @@ class DbService {
 
   updateData(data) {
     return new Promise((resolve, reject) => {
-      const query = "UPDATE your_table SET ? WHERE id = ?";
+      const query = "UPDATE name SET ? WHERE id = ?";
       connection.query(query, [data, data.id], (err, result) => {
         if (err) {
           reject(err);
@@ -65,7 +65,7 @@ class DbService {
 
   deleteData(id) {
     return new Promise((resolve, reject) => {
-      const query = "DELETE FROM your_table WHERE id = ?";
+      const query = "DELETE FROM name WHERE id = ?";
       connection.query(query, id, (err, result) => {
         if (err) {
           reject(err);
