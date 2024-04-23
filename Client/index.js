@@ -6,6 +6,30 @@ document.addEventListener("DOMContentLoaded", function () {
       loadHTMLTable(data);
     });
 });
+const addBtn = document.querySelector("#add-name-btn");
+
+addBtn.onclick = function () {
+  const nameInput = document.querySelector("#name-input");
+  const name = nameInput.value;
+  nameInput.value = "";
+
+  fetch("http://localhost:5000/insert", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name: name }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      // Optionally, you can handle the response here
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      // Handle any errors that occur during the fetch operation
+    });
+};
 
 function loadHTMLTable(data) {
   const table = document.querySelector("table tbody");
